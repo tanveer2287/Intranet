@@ -1,8 +1,14 @@
-﻿using Microsoft.AspNetCore;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Autofac.Extensions.DependencyInjection;
-
-namespace ePortal
+namespace OrgWebAPI
 {
     public class Program
     {
@@ -15,6 +21,7 @@ namespace ePortal
             WebHost.CreateDefaultBuilder(args)
                 .ConfigureServices(services => services.AddAutofac())
                 .UseStartup<Startup>();
+
 
     }
 }
