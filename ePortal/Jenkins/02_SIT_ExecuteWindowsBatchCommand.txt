@@ -1,0 +1,94 @@
+"C:\Program Files (x86)\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\sqlcmd.exe" -S 10.131.5.72 -U DMCCUser -P zz$oarnge3$7 -Q "BACKUP DATABASE [sit-dmcc_organization] TO DISK='C:\DMCC\DB Backups\sit-dmcc_organization.bak'"
+
+"C:\Program Files (x86)\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\sqlcmd.exe" -S 10.131.5.72 -U DMCCUser -P zz$oarnge3$7 -Q "BACKUP DATABASE [sit-dmcc_quotation] TO DISK='C:\DMCC\DB Backups\sit-dmcc_quotation.bak'"
+
+
+"C:\Program Files (x86)\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\sqlcmd.exe" -S 10.131.5.72 -U DMCCUser -P zz$oarnge3$7 -Q "BACKUP DATABASE [sit-dmcc] TO DISK='C:\DMCC\DB Backups\sit-dmcc.bak'"
+
+
+XCOPY /s /y "C:\inetpub\apisite_dmcc_sit\*.*" "C:\DMCC\01 Backup\%BUILD_NUMBER%\"
+
+XCOPY /s /y "C:\inetpub\wwwroot\04_Portal_UI_SIT\*.*" "C:\DMCC\01 Backup\%BUILD_NUMBER%\01_Portal_UI\"
+
+C:\Windows\System32\inetsrv\appcmd stop apppool /apppool.name:"DMCC_SIT"
+
+DEL /f /s /q "C:\inetpub\apisite_dmcc_sit"
+
+DEL /f /s /q "C:\inetpub\wwwroot\04_Portal_UI_SIT"
+
+RD /S /Q "C:\inetpub\apisite_dmcc_sit"
+
+RD /S /Q "C:\inetpub\wwwroot\04_Portal_UI_SIT"
+
+dotnet restore "C:\DMCC\Workspace_SIT\src\JLTi.DMCC.sln"
+
+dotnet publish "C:\DMCC\Workspace_SIT\src\JLTi.OrganizationManagement\JLTi.OrganizationManagement.csproj" -c release  -o "C:\inetpub\apisite_dmcc_sit\02_Org_API\"
+
+dotnet publish "C:\DMCC\Workspace_SIT\src\JLTi.QuotationManagement\JLTi.QuotationManagement.csproj" -c release  -o "C:\inetpub\apisite_dmcc_sit\03_Quote_API\"
+
+dotnet publish "C:\DMCC\Workspace_SIT\src\JLTi.DMCC\JLTi.DMCC.csproj" -c release  -o "C:\inetpub\apisite_dmcc_sit\04_DMCC_API\"
+
+dotnet publish "C:\DMCC\Workspace_SIT\src\JLTi.DMCC.UI\JLTi.DMCC.UI.csproj"  -c release  -o "C:\inetpub\wwwroot\04_Portal_UI_SIT\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\%BUILD_NUMBER%\02_Org_API\appsettings.json" "C:\inetpub\apisite_dmcc_sit\02_Org_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\%BUILD_NUMBER%\03_Quote_API\appsettings.json" "C:\inetpub\apisite_dmcc_sit\03_Quote_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\%BUILD_NUMBER%\04_DMCC_API\appsettings.json" "C:\inetpub\apisite_dmcc_sit\04_DMCC_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\%BUILD_NUMBER%\01_Portal_UI\appsettings.json" "C:\inetpub\wwwroot\04_Portal_UI_SIT\"
+
+
+XCOPY /s /y "C:\DMCC\01 Backup\%BUILD_NUMBER%\02_Org_API\nlog.config" "C:\inetpub\apisite_dmcc_sit\02_Org_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\%BUILD_NUMBER%\03_Quote_API\nlog.config" "C:\inetpub\apisite_dmcc_sit\03_Quote_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\%BUILD_NUMBER%\04_DMCC_API\nlog.config" "C:\inetpub\apisite_dmcc_sit\04_DMCC_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\%BUILD_NUMBER%\01_Portal_UI\nlog.config" "C:\inetpub\wwwroot\04_Portal_UI_SIT\"
+
+
+XCOPY /s /y "C:\DMCC\01 Backup\%BUILD_NUMBER%\02_Org_API\web.config" "C:\inetpub\apisite_dmcc_sit\02_Org_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\%BUILD_NUMBER%\03_Quote_API\web.config" "C:\inetpub\apisite_dmcc_sit\03_Quote_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\%BUILD_NUMBER%\04_DMCC_API\web.config" "C:\inetpub\apisite_dmcc_sit\04_DMCC_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\%BUILD_NUMBER%\01_Portal_UI\web.config" "C:\inetpub\wwwroot\04_Portal_UI_SIT\"
+
+
+del "C:\inetpub\wwwroot\04_Portal_UI_SIT\appsettings.development.json"
+
+del "C:\inetpub\apisite_dmcc_sit\02_Org_API\appsettings.development.json"
+
+del "C:\inetpub\apisite_dmcc_sit\03_Quote_API\appsettings.development.json"
+
+del "C:\inetpub\apisite_dmcc_sit\04_DMCC_API\appsettings.development.json"
+
+C:\Windows\System32\inetsrv\appcmd start apppool /apppool.name:"DMCC_SIT"
+
+
+dotnet exec --depsfile "C:\inetpub\apisite_dmcc_sit\02_Org_API\JLTi.OrganizationManagement.deps.json" --runtimeconfig "C:\inetpub\apisite_dmcc_sit\02_Org_API\JLTi.OrganizationManagement.runtimeconfig.json" "C:\DMCC\04 Installations\Nuget Packages\microsoft.entityframeworkcore.tools\1.1.4\tools\netcoreapp1.0\ef.dll" database update --assembly "C:\inetpub\apisite_dmcc_sit\02_Org_API\JLTi.OrganizationManagement.dll"
+
+dotnet exec --depsfile "C:\inetpub\apisite_dmcc_sit\03_Quote_API\JLTi.QuotationManagement.deps.json" --runtimeconfig "C:\inetpub\apisite_dmcc_sit\03_Quote_API\JLTi.QuotationManagement.runtimeconfig.json" "C:\DMCC\04 Installations\Nuget Packages\microsoft.entityframeworkcore.tools\1.1.4\tools\netcoreapp1.0\ef.dll" database update --assembly "C:\inetpub\apisite_dmcc_sit\03_Quote_API\JLTi.QuotationManagement.dll"
+
+dotnet exec --depsfile "C:\inetpub\apisite_dmcc_sit\04_DMCC_API\JLTi.DMCC.deps.json" --runtimeconfig "C:\inetpub\apisite_dmcc_sit\04_DMCC_API\JLTi.DMCC.runtimeconfig.json" "C:\DMCC\04 Installations\Nuget Packages\microsoft.entityframeworkcore.tools\1.1.4\tools\netcoreapp1.0\ef.dll" database update --assembly "C:\inetpub\apisite_dmcc_sit\04_DMCC_API\JLTi.DMCC.dll"
+
+XCOPY /s /y "C:\DMCC\Workspace_SIT\src\JLTi.DMCC.UI\gulpfile.js" "C:\inetpub\wwwroot\04_Portal_UI_SIT\"
+
+ XCOPY /s /y "C:\DMCC\Workspace_SIT\src\JLTi.DMCC.UI\sass\*.*" "C:\inetpub\wwwroot\04_Portal_UI_SIT\sass\"
+
+ XCOPY /s /y "C:\DMCC\Workspace_SIT\src\01 ExternalReferences\*.*" "C:\inetpub\wwwroot\04_Portal_UI_SIT\"
+
+
+echo \%BUILD_NUMBER% > "C:\inetpub\wwwroot\04_Portal_UI_SIT\version.txt"
+
+attrib -r "C:\inetpub\wwwroot\04_Portal_UI_SIT\*.*" /s
+
+cd /D "C:\inetpub\wwwroot\04_Portal_UI_SIT\"
+
+call npm install
+
+call gulp
+
+call icacls "C:\inetpub\wwwroot\04_Portal_UI_SIT" /grant IIS_IUSRS:F /T

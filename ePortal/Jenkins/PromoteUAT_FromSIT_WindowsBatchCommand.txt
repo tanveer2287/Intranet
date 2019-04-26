@@ -1,0 +1,67 @@
+"C:\Program Files (x86)\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\sqlcmd.exe" -S 10.131.5.72 -U DMCCUser -P zz$oarnge3$7 -Q "BACKUP DATABASE [uat-dmcc-organization] TO DISK='C:\DMCC\DB Backups\Uat-dmcc-organization.bak'"
+
+"C:\Program Files (x86)\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\sqlcmd.exe" -S 10.131.5.72 -U DMCCUser -P zz$oarnge3$7 -Q "BACKUP DATABASE [uat-dmcc-quotation] TO DISK='C:\DMCC\DB Backups\Uat-dmcc-quotation.bak'"
+
+"C:\Program Files (x86)\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\sqlcmd.exe" -S 10.131.5.72 -U DMCCUser -P zz$oarnge3$7 -Q "BACKUP DATABASE [uat-dmcc] TO DISK='C:\DMCC\DB Backups\uat-dmcc.bak'"
+
+RD /S /Q "C:\DMCC\01 Backup\UAT\Latest\"
+
+XCOPY /s /y "C:\inetpub\apisite_dmcc_uat\*.*" "C:\DMCC\01 Backup\UAT\Latest\"
+
+XCOPY /s /y "C:\inetpub\wwwroot\05_Portal_UI_UAT\*.*" "C:\DMCC\01 Backup\UAT\Latest\05_Portal_UI_UAT\"
+
+C:\Windows\System32\inetsrv\appcmd stop apppool /apppool.name:"DMCC_UAT"
+
+C:\Windows\System32\inetsrv\appcmd stop apppool /apppool.name:"DMCC_UAT_App"
+
+RD /S /Q "C:\inetpub\apisite_dmcc_uat\02_Org_API\"
+RD /S /Q "C:\inetpub\apisite_dmcc_uat\03_Quote_API\"
+RD /S /Q "C:\inetpub\apisite_dmcc_uat\04_DMCC_API\"
+
+RD /S /Q "C:\inetpub\wwwroot\05_Portal_UI_UAT\"
+
+XCOPY /s /y "C:\inetpub\apisite_dmcc_sit\02_Org_API\*.*" "C:\inetpub\apisite_dmcc_uat\02_Org_API\*.*"
+XCOPY /s /y "C:\inetpub\apisite_dmcc_sit\03_Quote_API\*.*" "C:\inetpub\apisite_dmcc_uat\03_Quote_API\*.*"
+XCOPY /s /y "C:\inetpub\apisite_dmcc_sit\04_DMCC_API\*.*" "C:\inetpub\apisite_dmcc_uat\04_DMCC_API\*.*"
+
+XCOPY /s /y "C:\inetpub\wwwroot\04_Portal_UI_SIT\*.*" "C:\inetpub\wwwroot\05_Portal_UI_UAT\*.*"
+
+
+
+XCOPY /s /y "C:\DMCC\01 Backup\UAT\Latest\02_Org_API\appsettings.json" "C:\inetpub\apisite_dmcc_uat\02_Org_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\UAT\Latest\03_Quote_API\appsettings.json" "C:\inetpub\apisite_dmcc_uat\03_Quote_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\UAT\Latest\04_DMCC_API\appsettings.json" "C:\inetpub\apisite_dmcc_uat\04_DMCC_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\UAT\Latest\05_Portal_UI_UAT\appsettings.json" "C:\inetpub\wwwroot\05_Portal_UI_UAT\"
+
+
+XCOPY /s /y "C:\DMCC\01 Backup\UAT\Latest\02_Org_API\nlog.config" "C:\inetpub\apisite_dmcc_uat\02_Org_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\UAT\Latest\03_Quote_API\nlog.config" "C:\inetpub\apisite_dmcc_uat\03_Quote_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\UAT\Latest\04_DMCC_API\nlog.config" "C:\inetpub\apisite_dmcc_uat\04_DMCC_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\UAT\Latest\05_Portal_UI_UAT\nlog.config" "C:\inetpub\wwwroot\05_Portal_UI_UAT\"
+
+
+XCOPY /s /y "C:\DMCC\01 Backup\UAT\Latest\02_Org_API\web.config" "C:\inetpub\apisite_dmcc_uat\02_Org_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\UAT\Latest\03_Quote_API\web.config" "C:\inetpub\apisite_dmcc_uat\03_Quote_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\UAT\Latest\04_DMCC_API\web.config" "C:\inetpub\apisite_dmcc_uat\04_DMCC_API\"
+
+XCOPY /s /y "C:\DMCC\01 Backup\UAT\Latest\05_Portal_UI_UAT\web.config" "C:\inetpub\wwwroot\05_Portal_UI_UAT\"
+
+
+C:\Windows\System32\inetsrv\appcmd start apppool /apppool.name:"DMCC_UAT"
+
+C:\Windows\System32\inetsrv\appcmd start apppool /apppool.name:"DMCC_UAT_App"
+
+
+dotnet exec --depsfile "C:\inetpub\apisite_dmcc_uat\02_Org_API\JLTi.OrganizationManagement.deps.json" --runtimeconfig "C:\inetpub\apisite_dmcc_uat\02_Org_API\JLTi.OrganizationManagement.runtimeconfig.json" "C:\DMCC\04 Installations\Nuget Packages\microsoft.entityframeworkcore.tools\1.1.4\tools\netcoreapp1.0\ef.dll" database update --assembly "C:\inetpub\apisite_dmcc_uat\02_Org_API\JLTi.OrganizationManagement.dll"
+
+dotnet exec --depsfile "C:\inetpub\apisite_dmcc_uat\03_Quote_API\JLTi.QuotationManagement.deps.json" --runtimeconfig "C:\inetpub\apisite_dmcc_uat\03_Quote_API\JLTi.QuotationManagement.runtimeconfig.json" "C:\DMCC\04 Installations\Nuget Packages\microsoft.entityframeworkcore.tools\1.1.4\tools\netcoreapp1.0\ef.dll" database update --assembly "C:\inetpub\apisite_dmcc_uat\03_Quote_API\JLTi.QuotationManagement.dll"
+
+dotnet exec --depsfile "C:\inetpub\apisite_dmcc_uat\04_DMCC_API\JLTi.DMCC.deps.json" --runtimeconfig "C:\inetpub\apisite_dmcc_uat\04_DMCC_API\JLTi.DMCC.runtimeconfig.json" "C:\DMCC\04 Installations\Nuget Packages\microsoft.entityframeworkcore.tools\1.1.4\tools\netcoreapp1.0\ef.dll" database update --assembly "C:\inetpub\apisite_dmcc_uat\04_DMCC_API\JLTi.DMCC.dll"

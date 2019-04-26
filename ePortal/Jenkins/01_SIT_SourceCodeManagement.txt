@@ -1,0 +1,9 @@
+Repositories
+
+Repository URL => git@github.com:JLTiPL/DMCC.git
+
+Credentials => Add user
+
+Branches to build => */commercial-lines
+
+Repository browser => Auto
