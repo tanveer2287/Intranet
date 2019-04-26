@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -49,8 +50,17 @@ namespace OrgWebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] EmployeeVM model)
         {
-            var employeeVM = _mapper.Map<EmployeeVM, Employee>(model);
-            await _empWriter.AddAsync(employeeVM);
+            try
+            {
+                var employeeVM = _mapper.Map<EmployeeVM, Employee>(model);
+                 _empWriter.Add(employeeVM); 
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+          
             return Ok();
         }
 

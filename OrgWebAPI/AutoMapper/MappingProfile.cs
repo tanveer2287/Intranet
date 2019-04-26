@@ -14,6 +14,7 @@ namespace OrgWebAPI.AutoMapper
         public MappingProfile()
         {
             CreateMap<Employee, EmployeeVM>();
+            CreateMap<EmployeeVM, Employee>();
         }
     }
 }

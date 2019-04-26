@@ -20,12 +20,21 @@ namespace Services
         {
             List<EmployeeVM> vm = new List<EmployeeVM>();
             var url = "api/Employees";
-            var result = await apiClient.GetOrgClient().GetAsync(url);
-            if (result.IsSuccessStatusCode)
+            try
             {
-                var data = await result.Content.ReadAsStringAsync();
-                vm = JsonConvert.DeserializeObject<List<EmployeeVM>>(data);
+                var result = await apiClient.GetOrgClient().GetAsync(url);
+                if (result.IsSuccessStatusCode)
+                {
+                    var data = await result.Content.ReadAsStringAsync();
+                    vm = JsonConvert.DeserializeObject<List<EmployeeVM>>(data);
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+          
             return vm;
         }
 
@@ -33,11 +42,20 @@ namespace Services
         {
             List<EmployeeVM> vm = new List<EmployeeVM>();
             var url = "api/Employees";
-            var result = await apiClient.GetOrgClient().PostAsync(url, new JsonContent(model));
-            if (result.IsSuccessStatusCode)
+            try
             {
-                return true;
+                var result = await apiClient.GetOrgClient().PostAsync(url, new JsonContent(model));
+                if (result.IsSuccessStatusCode)
+                {
+                    return true;
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+           
             return false;
         }
 
