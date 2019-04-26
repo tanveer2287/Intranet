@@ -7,11 +7,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAppUI", "ePortal\WebAppU
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrgWebAPI", "OrgWebAPI\OrgWebAPI.csproj", "{6B877DA0-7CAE-45B7-BF95-D8A775EA1191}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataViewModels", "DataViewModels\DataViewModels.csproj", "{0D2855A1-B98B-4AD5-94E6-D9FDADDFD45C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataViewModels", "DataViewModels\DataViewModels.csproj", "{0D2855A1-B98B-4AD5-94E6-D9FDADDFD45C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{10F1D2FB-6CFA-4C37-A2E5-2E0C2759F24C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{10F1D2FB-6CFA-4C37-A2E5-2E0C2759F24C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{BB969448-08EC-4607-8CE2-561893469A59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{BB969448-08EC-4607-8CE2-561893469A59}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jenkins", "Jenkins", "{5EFE9679-01B8-47EF-B991-3C4C21A72BBE}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Documents\DMCC\Jenkins\SIT\01_SIT_SourceCodeManagement.txt = ..\..\Documents\DMCC\Jenkins\SIT\01_SIT_SourceCodeManagement.txt
+		..\..\Documents\DMCC\Jenkins\SIT\02_SIT_ExecuteWindowsBatchCommand.txt = ..\..\Documents\DMCC\Jenkins\SIT\02_SIT_ExecuteWindowsBatchCommand.txt
+		..\..\Documents\Jenkins\Continuous Integration using Jenkins.docx = ..\..\Documents\Jenkins\Continuous Integration using Jenkins.docx
+		..\..\Documents\DMCC\Jenkins\UAT\PromoteUAT_FromSIT_WindowsBatchCommand.txt = ..\..\Documents\DMCC\Jenkins\UAT\PromoteUAT_FromSIT_WindowsBatchCommand.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
